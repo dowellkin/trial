@@ -6,6 +6,14 @@
 	>
 		<v-row>
 			<v-col>
+				<v-btn :loading="updating" @click="update">
+					Обновить
+				</v-btn>
+			</v-col>
+		</v-row>
+
+		<v-row>
+			<v-col>
 				<v-data-table
 					:headers="headers"
 					:items="rates"
@@ -47,7 +55,8 @@ export default {
 			{ text: 'Скопировать', value: 'actions' },
 		],
 		selected: [],
-		copyed: null
+		copyed: null,
+		updating: false,
 	}),
 	computed: {
 		...mapGetters('settings', ['interestedCurrencies']),
@@ -66,6 +75,13 @@ export default {
 			navigator.clipboard.writeText(str)
 			.then(() => {
 				this.copyed = data.Cur_Abbreviation
+			})
+		},
+		update(){
+			this.updating = true
+			this.$store.dispatch("rates/fetch")
+			.finally(() => {
+				this.updating = false
 			})
 		}
 	}

@@ -9,8 +9,11 @@
 				<v-btn class="mr-2" @click="openAddModal">
 					Добавить
 				</v-btn>
-				<v-btn @click="removeInterestedCurrencies">
+				<v-btn class="mr-2" @click="removeInterestedCurrencies">
 					Удалить
+				</v-btn>
+				<v-btn :loading="updating" @click="update">
+					Обновить
 				</v-btn>
 			</v-col>
 		</v-row>
@@ -94,7 +97,8 @@ export default {
 		addCurrency: {
 			currencies: []
 		},
-		max: 5
+		max: 5,
+		updating: false
 	}),
 	computed: {
 		...mapGetters('settings', ['interestedCurrencies', 'avaliableCurrencies']),
@@ -130,6 +134,13 @@ export default {
 			this.selected = [];
 			this.$store.dispatch("rates/fetch");
 		},
+		update(){
+			this.updating = true
+			this.$store.dispatch("rates/fetch")
+			.finally(() => {
+				this.updating = false
+			})
+		}
 	}
 }
 </script>
