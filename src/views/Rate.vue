@@ -20,7 +20,7 @@
 				<v-col cols="6">
 					<chart
 						v-if="!dynamicsLoading"
-						:value="dynamicsValues"
+						:value="dynamics"
 					></chart>
 				</v-col>
 			</v-row>
@@ -52,12 +52,6 @@ export default {
 		},
 		dynamics(){
 			return this.$store.getters['rates/dynamics'][this.code]
-		},
-		dynamicsValues(){
-			return this.dynamics?.map(el => el?.Cur_OfficialRate)
-		},
-		dynamicsLabels(){
-			return this.dynamics?.map(el => (new Date(el.Date).getDate()))
 		}
 	},
 	created(){
